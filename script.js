@@ -9,7 +9,16 @@ refreshButton.addEventListener("click", () => {
     
 	myLibrary.forEach((element) => {
     	let book = document.createElement("div");
-        book.textContent = element.title;
+        let h1 = document.createElement("h1");
+        h1.textContent = element.title;
+        let h2 = document.createElement("h2");
+        h2.textContent = element.author;
+        let p = document.createElement("p");
+        p.textContent = element.pageNum;
+        book.appendChild(h1);
+        book.appendChild(h2);
+        book.appendChild(p);
+        book.classList.add("book");
         bookDisplay.appendChild(book);
     })
 })
@@ -30,4 +39,5 @@ function addBookToLibrary(title, author, pageNum) {
 }
 
 addBookToLibrary("The Book", "Bob", 300);
+addBookToLibrary("Super Awesome Awesome Book", "Joe Mama", 999);
 console.log(myLibrary);
