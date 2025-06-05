@@ -19,7 +19,7 @@
     flex-direction: column;
     
     height: 150px;
-    width: 200px;
+    width: 225px;
     overflow: hidden;
     
     padding: 10px;
@@ -36,6 +36,11 @@
 
 .book > h2 {
     font-size: 1rem;
+}
+
+.book > p {
+    padding-top: 5px;
+    font-size: .75rem;
 }
 
 .book > div {

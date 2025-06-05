@@ -1,6 +1,8 @@
 const myLibrary = Array();
+const FINISHED = "Finished";
+const NOTFINISHED = "Not Finished";
 
-function Book(title, author, pageNum) {
+function Book(title, author, pageNum, hasRead) {
 	if (!new.target) {
     	throw Error("Use 'new' to declare new objects");
     }
@@ -9,10 +11,36 @@ function Book(title, author, pageNum) {
     this.title = title;
     this.author = author;
     this.pageNum = pageNum;
+    this.hasRead = hasRead;
 }
 
-function addBookToLibrary(title, author, pageNum) {
-	myLibrary.push(new Book(title, author, pageNum));
+Book.prototype.toggleRead = function() {
+	this.hasRead = !this.hasRead;
+}
+
+function addBookToLibrary(title, author, pageNum, hasRead) {
+	myLibrary.push(new Book(title, author, pageNum, hasRead));
+}
+
+function removeBook(event) {
+	let toRemove = event.target.parentElement.parentElement.dataset.id;
+    myLibrary.forEach((currentBook) => {
+        if (currentBook.id == toRemove) {
+            toRemove == myLibrary.indexOf(currentBook);
+            myLibrary.splice(toRemove, 1);
+            refreshDisplay();
+        }
+    })
+}
+
+function toggleRead(event) {
+	let toToggle = event.target.parentElement.parentElement.dataset.id;
+    myLibrary.forEach((currentBook) => {
+        if (currentBook.id == toToggle) {
+            currentBook.toggleRead();
+            refreshDisplay();
+        }
+    })
 }
 
 function refreshDisplay() {
@@ -28,28 +56,25 @@ function refreshDisplay() {
         h1.textContent = element.title;
         let h2 = document.createElement("h2");
         h2.textContent = element.author;
-        let div = document.createElement("div");
-        let button = document.createElement("button");
-        button.textContent = "Remove";
-        button.dataset.id = element.id;
         let p = document.createElement("p");
-        p.textContent = element.pageNum;
+        p.textContent = (element.hasRead) ? FINISHED : NOTFINISHED;
+        let div = document.createElement("div");
+        let removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.addEventListener("click", removeBook);
+        let toggleButton = document.createElement("button");
+        toggleButton.textContent = "Toggle Read";
+        toggleButton.addEventListener("click", toggleRead);
+        let pages = document.createElement("p");
+        pages.textContent = element.pageNum;
         
-        button.addEventListener("click", (event) => {
-       		let toRemove = event.target.dataset.id;
-            myLibrary.forEach( (currentBook) => {
-            	if (currentBook.id == toRemove) {
-					toRemove == myLibrary.indexOf(currentBook);
-                    myLibrary.splice(toRemove, 1);
-                    refreshDisplay();
-				}
-            })
-        });
-        
-        div.appendChild(button);
-        div.appendChild(p);
+        book.dataset.id = element.id;
+        div.appendChild(removeButton);
+        div.appendChild(toggleButton);
+        div.appendChild(pages);
         book.appendChild(h1);
         book.appendChild(h2);
+        book.appendChild(p);
 		book.appendChild(div);
         book.classList.add("book");
         bookDisplay.appendChild(book);
@@ -69,7 +94,8 @@ submitButton.addEventListener("click", () => {
 	if (form.checkValidity()) {
     	addBookToLibrary(document.querySelector("#title").value,
         				document.querySelector("#author").value,
-                        document.querySelector("#numPages").value);
+                        document.querySelector("#numPages").value,
+                        document.querySelector("#hasRead").checked);
     	refreshDisplay();
         console.log(myLibrary);
     	dialog.close();
