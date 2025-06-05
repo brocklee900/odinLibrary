@@ -8,19 +8,33 @@
         <link rel="stylesheet" href="./styles.css">
     </head>
     <body>
-        <button id="refresh">Refresh</button>
+        <button id="addBook">Add Book</button>
         <div id="bookDisplay">
-            <div class="book">
-                <h1>
-                    My Super Cool Book
-                </h1>
-                <h2>
-                    Super anonymous author
-                </h2>
-                <p>256</p>
 
-            </div>
         </div>
+        
+        <dialog id="addBookDialog" closeby="none">
+            <form method="dialog">
+                <div>
+                    <label for="title">Title: </label>
+                    <input id="title" type="text" required>
+                </div>
+                <div>
+                    <label for="author">Author: </label>
+                    <input id="author" type="text" required>
+                </div>
+                <div>
+                    <label for="numPages">Pages: </label>
+                    <input id="numPages" type="number" required>
+                </div>
+                
+                <div>
+                    <button id="submitButton" type="submit">Submit</button>
+                    <button id="dialogClose" type="button">Exit</button>
+                </div> 
+            <form>
+        </dialog>
+        
         <script src="./script.js"></script>
     </body>
 </html>

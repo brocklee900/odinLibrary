@@ -1,9 +1,24 @@
 const myLibrary = Array();
 
-let bookDisplay = document.querySelector("#bookDisplay");
-let refreshButton = document.querySelector("#refresh");
-refreshButton.addEventListener("click", () => {
-	while(bookDisplay.lastElementChild) {
+function Book(title, author, pageNum) {
+	if (!new.target) {
+    	throw Error("Use 'new' to declare new objects");
+    }
+    
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pageNum = pageNum;
+}
+
+function addBookToLibrary(title, author, pageNum) {
+	myLibrary.push(new Book(title, author, pageNum));
+}
+
+function refreshDisplay() {
+	let bookDisplay = document.querySelector("#bookDisplay");
+    
+    while(bookDisplay.lastElementChild) {
     	bookDisplay.removeChild(bookDisplay.lastElementChild)
     }
     
@@ -20,24 +35,30 @@ refreshButton.addEventListener("click", () => {
         book.appendChild(p);
         book.classList.add("book");
         bookDisplay.appendChild(book);
-    })
-})
+    });
+}
 
-function Book(title, author, pageNum) {
-	if (!new.target) {
-    	throw Error("Use 'new' to declare new objects");
+
+let dialog = document.querySelector("#addBookDialog");
+let addButton = document.querySelector("#addBook");
+addButton.addEventListener("click", () => {
+	dialog.showModal();
+});
+
+let form = document.querySelector("form");
+let submitButton = document.querySelector("#submitButton");
+submitButton.addEventListener("click", () => {
+	if (form.checkValidity()) {
+    	addBookToLibrary(document.querySelector("#title").value,
+        				document.querySelector("#author").value,
+                        document.querySelector("#numPages").value);
+    	refreshDisplay();
+        console.log(myLibrary);
+    	dialog.close();
     }
-    
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pageNum = pageNum;
-}
+});
 
-function addBookToLibrary(title, author, pageNum) {
-	myLibrary.push(new Book(title, author, pageNum));
-}
-
-addBookToLibrary("The Book", "Bob", 300);
-addBookToLibrary("Super Awesome Awesome Book", "Joe Mama", 999);
-console.log(myLibrary);
+let exitButton = document.querySelector("#dialogClose");
+exitButton.addEventListener("click", () => {
+	dialog.close();
+});
