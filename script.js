@@ -28,11 +28,29 @@ function refreshDisplay() {
         h1.textContent = element.title;
         let h2 = document.createElement("h2");
         h2.textContent = element.author;
+        let div = document.createElement("div");
+        let button = document.createElement("button");
+        button.textContent = "Remove";
+        button.dataset.id = element.id;
         let p = document.createElement("p");
         p.textContent = element.pageNum;
+        
+        button.addEventListener("click", (event) => {
+       		let toRemove = event.target.dataset.id;
+            myLibrary.forEach( (currentBook) => {
+            	if (currentBook.id == toRemove) {
+					toRemove == myLibrary.indexOf(currentBook);
+                    myLibrary.splice(toRemove, 1);
+                    refreshDisplay();
+				}
+            })
+        });
+        
+        div.appendChild(button);
+        div.appendChild(p);
         book.appendChild(h1);
         book.appendChild(h2);
-        book.appendChild(p);
+		book.appendChild(div);
         book.classList.add("book");
         bookDisplay.appendChild(book);
     });
