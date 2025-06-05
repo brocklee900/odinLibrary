@@ -22,6 +22,16 @@ function addBookToLibrary(title, author, pageNum, hasRead) {
 	myLibrary.push(new Book(title, author, pageNum, hasRead));
 }
 
+function clearLibraryDisplay(bookDisplay) {
+	while(bookDisplay.lastElementChild) {
+    	bookDisplay.removeChild(bookDisplay.lastElementChild)
+    }
+}
+
+function clearLibrary(bookDisplay) {
+	myLibrary.length = 0;
+}
+
 function removeBook(event) {
 	let toRemove = event.target.parentElement.parentElement.dataset.id;
     myLibrary.forEach((currentBook) => {
@@ -46,9 +56,7 @@ function toggleRead(event) {
 function refreshDisplay() {
 	let bookDisplay = document.querySelector("#bookDisplay");
     
-    while(bookDisplay.lastElementChild) {
-    	bookDisplay.removeChild(bookDisplay.lastElementChild)
-    }
+    clearLibraryDisplay(bookDisplay);
     
 	myLibrary.forEach((element) => {
     	let book = document.createElement("div");
@@ -81,6 +89,12 @@ function refreshDisplay() {
     });
 }
 
+let clearButton = document.querySelector("#clear");
+clearButton.addEventListener("click", () => {
+	bookDisplay = document.querySelector("#bookDisplay");
+    clearLibrary();
+    clearLibraryDisplay(bookDisplay);
+})
 
 let dialog = document.querySelector("#addBookDialog");
 let addButton = document.querySelector("#addBook");
@@ -97,12 +111,13 @@ submitButton.addEventListener("click", () => {
                         document.querySelector("#numPages").value,
                         document.querySelector("#hasRead").checked);
     	refreshDisplay();
-        console.log(myLibrary);
     	dialog.close();
+        form.reset();
     }
 });
 
 let exitButton = document.querySelector("#dialogClose");
 exitButton.addEventListener("click", () => {
 	dialog.close();
+    form.reset();
 });
