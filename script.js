@@ -2,21 +2,39 @@ const myLibrary = Array();
 const FINISHED = "Finished";
 const NOTFINISHED = "Not Finished";
 
-function Book(title, author, pageNum, hasRead) {
-	if (!new.target) {
-    	throw Error("Use 'new' to declare new objects");
+class Book {
+    #id;
+    #title;
+    #author;
+    #pageNum;
+    #hasRead;
+    constructor(title, author, pageNum, hasRead) {
+        this.#id = crypto.randomUUID();
+        this.#title = title;
+        this.#author = author;
+        this.#pageNum = pageNum;
+        this.#hasRead = hasRead;
     }
-    
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pageNum = pageNum;
-    this.hasRead = hasRead;
+    get id() {
+        return this.#id;
+    }
+    get title() {
+        return this.#title;
+    }
+    get author() {
+        return this.#author;
+    }
+    get pageNum() {
+        return this.#pageNum;
+    }
+    get hasRead() {
+        return this.#hasRead;
+    }
+    toggleRead() {
+        this.#hasRead = !this.#hasRead;
+    }
 }
 
-Book.prototype.toggleRead = function() {
-	this.hasRead = !this.hasRead;
-}
 
 function addBookToLibrary(title, author, pageNum, hasRead) {
 	myLibrary.push(new Book(title, author, pageNum, hasRead));
