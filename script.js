@@ -122,16 +122,50 @@ addButton.addEventListener("click", () => {
 
 let form = document.querySelector("form");
 let submitButton = document.querySelector("#submitButton");
-submitButton.addEventListener("click", () => {
-	if (form.checkValidity()) {
-    	addBookToLibrary(document.querySelector("#title").value,
-        				document.querySelector("#author").value,
-                        document.querySelector("#numPages").value,
-                        document.querySelector("#hasRead").checked);
-    	refreshDisplay();
-    	dialog.close();
-        form.reset();
+
+let title = document.querySelector("#title");
+let author = document.querySelector("#author");
+let numPages = document.querySelector("#numPages");
+let hasRead = document.querySelector("#hasRead");
+
+title.setCustomValidity("Please enter a book title.");
+title.addEventListener("input", (event) => {
+    if (title.validity.valueMissing) {
+        title.setCustomValidity("Please enter a book title.");
+    } else {
+        title.setCustomValidity("");
     }
+});
+
+author.setCustomValidity("Please enter an author name.");
+author.addEventListener("input", (event) => {
+    if (author.validity.valueMissing) {
+        author.setCustomValidity("Please enter an author name.");
+    } else {
+        author.setCustomValidity("");
+    }
+});
+
+numPages.setCustomValidity("Please enter a page number.");
+numPages.addEventListener("input", (event) => {
+    if (numPages.validity.valueMissing) {
+        numPages.setCustomValidity("Please enter a page number.");
+    } else {
+        numPages.setCustomValidity("");
+    }
+});
+
+form.addEventListener("submit", () => {
+
+	if (form.checkValidity()) {
+        console.log("ayo");
+    	addBookToLibrary(title.value,
+        				author.value,
+                        numPages.value,
+                        hasRead.checked);
+    	refreshDisplay();
+        form.reset();
+    };
 });
 
 let exitButton = document.querySelector("#dialogClose");
